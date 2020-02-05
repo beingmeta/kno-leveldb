@@ -1,0 +1,3 @@
+kno-mysql-dbgsym_1910.0.1-9-stable_amd64.ddeb debug optional automatic=yes
+kno-mysql_1910.0.1-9-stable_amd64.buildinfo libs optional
+kno-mysql_1910.0.1-9-stable_amd64.deb libdevel optional

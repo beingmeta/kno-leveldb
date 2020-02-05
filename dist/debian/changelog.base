@@ -1,0 +1,11 @@
+kno-leveldb (1910.1) stable; urgency=medium
+
+  * Separate root package and repository
+
+ -- Ken Haase <kh@beingmeta.com>  Wed, 08 Jan 2020 13:22:10 -0800
+
+kno-leveldb (1910.0) stable; urgency=medium
+
+  * Initial create of separate dpkg for leveldb cmodule
+
+ -- Ken Haase <kh@beingmeta.com>  Sat, 5 Jan 2020 21:06:13 +0000

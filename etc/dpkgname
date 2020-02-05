@@ -1,0 +1,2 @@
+#!/bin/sh
+git describe | sed -e "s/-g[0123456789ABCDEFabcdef]*$//" | sed -e "s/kno-odbc-/kno-odbc_/"
