@@ -27,7 +27,7 @@
 #include "kno/bufio.h"
 
 #include "leveldb/c.h"
-#include "kno/leveldb.h"
+#include "leveldb.h"
 #include "kno/cprims.h"
 
 #include <libu8/libu8.h>
