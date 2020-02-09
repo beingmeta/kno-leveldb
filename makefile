@@ -1,4 +1,4 @@
-KNOCONFIG       = knoconfig
+KNOCONFIG         = knoconfig
 KNOBUILD          = knobuild
 
 prefix		::= $(shell ${KNOCONFIG} prefix)
@@ -85,6 +85,11 @@ fresh:
 	make clean
 	make default
 
+gitup gitup-trunk:
+	git checkout trunk && git pull
+
+# Debian packaging
+
 debian: leveldb.c makefile \
 	dist/debian/rules dist/debian/control \
 	dist/debian/changelog.base
@@ -129,9 +134,6 @@ debfresh:
 
 # Alpine packaging
 
-${APKREPO}/dist/x86_64:
-	@install -d $@
-
 staging/alpine:
 	@install -d $@
 
@@ -142,7 +144,8 @@ staging/alpine/kno-${PKG_NAME}.tar: staging/alpine
 	git archive --prefix=kno-${PKG_NAME}/ -o staging/alpine/kno-${PKG_NAME}.tar HEAD
 
 dist/alpine.done: staging/alpine/APKBUILD makefile \
-	staging/alpine/kno-${PKG_NAME}.tar ${APKREPO}/dist/x86_64
+	staging/alpine/kno-${PKG_NAME}.tar
+	if [ ! -d ${APK_ARCH_DIR} ]; then mkdir -p ${APK_ARCH_DIR}; fi;
 	cd staging/alpine; \
 		abuild -P ${APKREPO} clean cleancache cleanpkg && \
 		abuild checksum && \
