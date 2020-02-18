@@ -91,7 +91,6 @@ gitup gitup-trunk:
 # Debian packaging
 
 DEBFILES=changelog.base compat control copyright dirs docs install
-	cd debian; chmod a-x ${DEBFILES}
 
 debian: leveldb.c makefile \
 	dist/debian/rules dist/debian/control \
