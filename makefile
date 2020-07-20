@@ -10,9 +10,14 @@ INCLUDE		::= $(shell ${KNOCONFIG} include)
 KNO_VERSION	::= $(shell ${KNOCONFIG} version)
 KNO_MAJOR	::= $(shell ${KNOCONFIG} major)
 KNO_MINOR	::= $(shell ${KNOCONFIG} minor)
-PKG_RELEASE	::= $(cat ./etc/release)
-DPKG_NAME	::= $(shell ./etc/dpkgname)
-SUDO  		::= $(shell which sudo)
+PKG_VERSION     ::= $(shell cat ./version)
+PKG_MAJOR       ::= $(shell cat ./version | cut -d. -f1)
+FULL_VERSION    ::= ${KNO_MAJOR}.${KNO_MINOR}.${PKG_VERSION}
+PATCHLEVEL      ::= $(shell u8_gitpatchcount ./version)
+PATCH_VERSION   ::= ${FULL_VERSION}-${PATCHLEVEL}
+
+PKG_NAME	::= leveldb
+DPKG_NAME	::= ${PKG_NAME}_${PATCH_VERSION}
 
 INIT_CFLAGS  	::= ${CFLAGS}
 INIT_LDFLAGS 	::= ${LDFLAGS}
@@ -20,6 +25,8 @@ KNO_CFLAGS	::= -I. -fPIC $(shell ${KNOCONFIG} cflags)
 KNO_LDFLAGS	::= -fPIC $(shell ${KNOCONFIG} ldflags)
 LEVELDB_CFLAGS  ::= 
 LEVELDB_LDFLAGS ::= -lleveldb
+SUDO  		::= $(shell which sudo)
+
 
 CFLAGS		  = ${INIT_CFLAGS} ${LEVELDB_CFLAGS} ${KNO_CFLAGS} 
 LDFLAGS		  = ${INIT_LDFLAGS} ${LEVELDB_LDFLAGS} ${KNO_LDFLAGS}
@@ -27,11 +34,7 @@ MKSO		  = $(CC) -shared $(CFLAGS) $(LDFLAGS) $(LIBS)
 SYSINSTALL        = /usr/bin/install -c
 MSG		  = echo
 
-
-PKG_NAME	::= leveldb
 GPGID             = FE1BC737F9F323D732AA26330620266BE5AFF294
-PKG_RELEASE     ::= $(shell cat etc/release)
-PKG_VERSION	::= ${KNO_MAJOR}.${KNO_MINOR}.${PKG_RELEASE}
 CODENAME	::= $(shell ${KNOCONFIG} codename)
 REL_BRANCH	::= $(shell ${KNOBUILD} getbuildopt REL_BRANCH current)
 REL_STATUS	::= $(shell ${KNOBUILD} getbuildopt REL_STATUS stable)
@@ -66,18 +69,22 @@ ${CMODULES}:
 
 install: build ${CMODULES}
 	@${SUDO} ${SYSINSTALL} ${PKG_NAME}.${libsuffix} \
-			${CMODULES}/${PKG_NAME}.so.${PKG_VERSION}
-	@echo === Installed ${CMODULES}/${PKG_NAME}.so.${PKG_VERSION}
-	@${SUDO} ln -sf ${PKG_NAME}.so.${PKG_VERSION} \
+			${CMODULES}/${PKG_NAME}.so.${FULL_VERSION}
+	@echo === Installed ${CMODULES}/${PKG_NAME}.so.${FULL_VERSION}
+	@${SUDO} ln -sf ${PKG_NAME}.so.${FULL_VERSION} \
+			${CMODULES}/${PKG_NAME}.so.${KNO_MAJOR}.${KNO_MINOR}.${PKG_MAJOR}
+	@echo === Linked ${CMODULES}/${PKG_NAME}.so.${KNO_MAJOR}.${KNO_MINOR}${PKG_MAJOR} \
+		to ${PKG_NAME}.so.${FULL_VERSION}
+	@${SUDO} ln -sf ${PKG_NAME}.so.${FULL_VERSION} \
 			${CMODULES}/${PKG_NAME}.so.${KNO_MAJOR}.${KNO_MINOR}
 	@echo === Linked ${CMODULES}/${PKG_NAME}.so.${KNO_MAJOR}.${KNO_MINOR} \
-		to ${PKG_NAME}.so.${PKG_VERSION}
-	@${SUDO} ln -sf ${PKG_NAME}.so.${PKG_VERSION} \
+		to ${PKG_NAME}.so.${FULL_VERSION}
+	@${SUDO} ln -sf ${PKG_NAME}.so.${FULL_VERSION} \
 			${CMODULES}/${PKG_NAME}.so.${KNO_MAJOR}
 	@echo === Linked ${CMODULES}/${PKG_NAME}.so.${KNO_MAJOR} \
-		to ${PKG_NAME}.so.${PKG_VERSION}
-	@${SUDO} ln -sf ${PKG_NAME}.so.${PKG_VERSION} ${CMODULES}/${PKG_NAME}.so
-	@echo === Linked ${CMODULES}/${PKG_NAME}.so to ${PKG_NAME}.so.${PKG_VERSION}
+		to ${PKG_NAME}.so.${FULL_VERSION}
+	@${SUDO} ln -sf ${PKG_NAME}.so.${FULL_VERSION} ${CMODULES}/${PKG_NAME}.so
+	@echo === Linked ${CMODULES}/${PKG_NAME}.so to ${PKG_NAME}.so.${FULL_VERSION}
 
 clean:
 	rm -f *.o *.${libsuffix}
