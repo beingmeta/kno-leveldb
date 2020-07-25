@@ -50,7 +50,6 @@ leveldb.o: leveldb.c makefile
 	@$(MSG) CC "(LEVELDB)" $@
 leveldb.so: leveldb.o
 	@$(MKSO) $(LDFLAGS) -o $@ leveldb.o ${LDFLAGS}
-	@if test ! -z "${COPY_CMODS}"; then cp $@ ${COPY_CMODS}; fi;
 	@$(MSG) MKSO  $@ $<
 	@ln -sf $(@F) $(@D)/$(@F).${KNO_MAJOR}
 leveldb.dylib: leveldb.c makefile
@@ -58,7 +57,6 @@ leveldb.dylib: leveldb.c makefile
 		`basename $(@F) .dylib`.${KNO_MAJOR}.dylib \
 		${CFLAGS} ${LDFLAGS} -o $@ $(DYLIB_FLAGS) \
 		leveldb.c
-	@if test ! -z "${COPY_CMODS}"; then cp $@ ${COPY_CMODS}; fi;
 	@$(MSG) MACLIBTOOL  $@ $<
 
 TAGS: leveldb.c
