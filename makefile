@@ -28,8 +28,8 @@ LEVELDB_LDFLAGS ::= -lleveldb
 SUDO  		::= $(shell which sudo)
 
 
-CFLAGS		  = ${INIT_CFLAGS} ${LEVELDB_CFLAGS} ${KNO_CFLAGS} 
-LDFLAGS		  = ${INIT_LDFLAGS} ${LEVELDB_LDFLAGS} ${KNO_LDFLAGS}
+CFLAGS		  = ${INIT_CFLAGS} ${LEVELDB_CFLAGS} ${KNO_CFLAGS} ${XCFLAGS}
+LDFLAGS		  = ${INIT_LDFLAGS} ${LEVELDB_LDFLAGS} ${KNO_LDFLAGS} ${XLDFLAGS}
 MKSO		  = $(CC) -shared $(CFLAGS) $(LDFLAGS) $(LIBS)
 SYSINSTALL        = /usr/bin/install -c
 MSG		  = echo
@@ -43,16 +43,42 @@ ARCH            ::= $(shell ${KNOBUILD} getbuildopt BUILD_ARCH || uname -m)
 APKREPO         ::= $(shell ${KNOBUILD} getbuildopt APKREPO /srv/repo/kno/apk)
 APK_ARCH_DIR      = ${APKREPO}/staging/${ARCH}
 
-default build: ${PKG_NAME}.${libsuffix}
+# Meta targets
 
-leveldb.o: leveldb.c makefile
+# .buildmode contains the default build target (standard|debugging)
+# debug/normal targets change the buildmode
+# module build targets depend on .buildmode
+
+default build: .buildmode
+	make $(shell cat .buildmode)
+
+module: ${PKG_NAME}.${libsuffix}
+
+standard:
+	make module
+debugging:
+	make XCFLAGS="-O0 -g3" module
+
+.buildmode:
+	echo standard > .buildmode
+
+debug:
+	echo debugging > .buildmode
+	make
+normal:
+	echo standard > .buildmode
+	make
+
+# Basic targets
+
+leveldb.o: leveldb.c makefile .buildmode
 	@$(CC) $(CFLAGS) -o $@ -c $<
 	@$(MSG) CC "(LEVELDB)" $@
-leveldb.so: leveldb.o
+leveldb.so: leveldb.o makefile .buildmode
 	@$(MKSO) $(LDFLAGS) -o $@ leveldb.o ${LDFLAGS}
 	@$(MSG) MKSO  $@ $<
 	@ln -sf $(@F) $(@D)/$(@F).${KNO_MAJOR}
-leveldb.dylib: leveldb.c makefile
+leveldb.dylib: leveldb.c makefile .buildmode
 	@$(MACLIBTOOL) -install_name \
 		`basename $(@F) .dylib`.${KNO_MAJOR}.dylib \
 		${CFLAGS} ${LDFLAGS} -o $@ $(DYLIB_FLAGS) \
