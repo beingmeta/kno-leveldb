@@ -23,6 +23,7 @@ INIT_CFLAGS  	::= ${CFLAGS}
 INIT_LDFLAGS 	::= ${LDFLAGS}
 KNO_CFLAGS	::= -I. -fPIC $(shell ${KNOCONFIG} cflags)
 KNO_LDFLAGS	::= -fPIC $(shell ${KNOCONFIG} ldflags)
+KNO_LIBS	::= $(shell ${KNOCONFIG} libs)
 LEVELDB_CFLAGS  ::= 
 LEVELDB_LDFLAGS ::= -lleveldb
 SUDO  		::= $(shell which sudo)
