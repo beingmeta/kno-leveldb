@@ -75,7 +75,7 @@ normal:
 # Basic targets
 
 leveldb.o: leveldb.c makefile .buildmode
-	@$(CC) $(CFLAGS) -o $@ -c $<
+	@$(CC) $(CFLAGS) -D_FILEINFO="\"$(shell u8_fileinfo ./$< $(dirname $(pwd))/)\"" -o $@ -c $<
 	@$(MSG) CC "(LEVELDB)" $@
 leveldb.so: leveldb.o makefile .buildmode
 	@$(MKSO) $(LDFLAGS) -o $@ leveldb.o ${LDFLAGS}

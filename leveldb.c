@@ -45,6 +45,8 @@
 #include <libu8/u8crypto.h>
 
 kno_lisp_type kno_leveldb_type;
+#define KNO_LEVELDB_TYPE kno_any_type
+
 u8_condition Leveldb_Error = "Leveldb/Error";
 
 static ssize_t default_writebuf_size = -1;
@@ -541,9 +543,13 @@ static void recycle_leveldb(struct KNO_RAW_CONS *c)
 
 /* Primitives */
 
-DEFPRIM2("leveldb/open",leveldb_open_prim,KNO_MAX_ARGS(2)|KNO_MIN_ARGS(1),
-	 "`(LEVELDB/OPEN *arg0* [*arg1*])` **undocumented**",
-	 kno_string_type,KNO_VOID,kno_any_type,KNO_VOID);
+
+KNO_DEFCPRIM("leveldb/open",leveldb_open_prim,
+	     KNO_MAX_ARGS(2)|KNO_MIN_ARGS(1),
+	     "`(LEVELDB/OPEN *arg0* [*arg1*])` "
+	     "**undocumented**",
+	     "path",kno_string_type,KNO_VOID,
+	     "opts",kno_any_type,KNO_VOID)
 static lispval leveldb_open_prim(lispval path,lispval opts)
 {
   struct KNO_LEVELDB_CONS *db = u8_alloc(struct KNO_LEVELDB_CONS);
@@ -556,9 +562,12 @@ static lispval leveldb_open_prim(lispval path,lispval opts)
     return KNO_ERROR_VALUE;}
 }
 
-DEFPRIM1("leveldb?",leveldbp_prim,KNO_MAX_ARGS(1)|KNO_MIN_ARGS(1),
-	 "`(LEVELDB? *arg0*)` **undocumented**",
-	 kno_any_type,KNO_VOID);
+
+KNO_DEFCPRIM("leveldb?",leveldbp_prim,
+	     KNO_MAX_ARGS(1)|KNO_MIN_ARGS(1),
+	     "`(LEVELDB? *arg0*)` "
+	     "**undocumented**",
+	     "arg",kno_any_type,KNO_VOID)
 static lispval leveldbp_prim(lispval arg)
 {
   if (KNO_TYPEP(arg,kno_leveldb_type))
@@ -566,8 +575,12 @@ static lispval leveldbp_prim(lispval arg)
   else return KNO_FALSE;
 }
 
-DEFPRIM("leveldb/close",leveldb_close_prim,KNO_MAX_ARGS(1)|KNO_MIN_ARGS(1),
-	"`(LEVELDB/CLOSE *arg0*)` **undocumented**");
+
+KNO_DEFCPRIM("leveldb/close",leveldb_close_prim,
+	     KNO_MAX_ARGS(1)|KNO_MIN_ARGS(1),
+	     "`(LEVELDB/CLOSE *arg0*)` "
+	     "**undocumented**",
+	     "leveldb",KNO_LEVELDB_TYPE,KNO_VOID)
 static lispval leveldb_close_prim(lispval leveldb)
 {
   struct KNO_LEVELDB_CONS *db = (kno_leveldb_cons)leveldb;
@@ -575,8 +588,11 @@ static lispval leveldb_close_prim(lispval leveldb)
   return KNO_TRUE;
 }
 
-DEFPRIM("leveldb/reopen",leveldb_reopen_prim,KNO_MAX_ARGS(1)|KNO_MIN_ARGS(1),
-	"`(leveldb/reopen *db*)`");
+
+KNO_DEFCPRIM("leveldb/reopen",leveldb_reopen_prim,
+	     KNO_MAX_ARGS(1)|KNO_MIN_ARGS(1),
+	     "`(leveldb/reopen *db*)` **undocumented**",
+	     "leveldb",KNO_LEVELDB_TYPE,KNO_VOID)
 static lispval leveldb_reopen_prim(lispval leveldb)
 {
   struct KNO_LEVELDB_CONS *db = (kno_leveldb_cons)leveldb;
@@ -589,8 +605,14 @@ static lispval leveldb_reopen_prim(lispval leveldb)
 
 /* Basic operations */
 
-DEFPRIM("leveldb/get",leveldb_get_prim,KNO_MAX_ARGS(3)|KNO_MIN_ARGS(2),
-	"`(LEVELDB/GET *arg0* *arg1* [*arg2*])` **undocumented**");
+
+KNO_DEFCPRIM("leveldb/get",leveldb_get_prim,
+	     KNO_MAX_ARGS(3)|KNO_MIN_ARGS(2),
+	     "`(LEVELDB/GET *arg0* *arg1* [*arg2*])` "
+	     "**undocumented**",
+	     "leveldb",KNO_LEVELDB_TYPE,KNO_VOID,
+	     "key",kno_any_type,KNO_VOID,
+	     "opts",kno_any_type,KNO_VOID)
 static lispval leveldb_get_prim(lispval leveldb,lispval key,lispval opts)
 {
   struct KNO_LEVELDB_CONS *db = (kno_leveldb_cons)leveldb;
@@ -643,8 +665,15 @@ static lispval leveldb_get_prim(lispval leveldb,lispval key,lispval opts)
       return KNO_ERROR_VALUE;}}
 }
 
-DEFPRIM("leveldb/put!",leveldb_put_prim,KNO_MAX_ARGS(4)|KNO_MIN_ARGS(3),
-	"`(LEVELDB/PUT! *arg0* *arg1* *arg2* [*arg3*])` **undocumented**");
+
+KNO_DEFCPRIM("leveldb/put!",leveldb_put_prim,
+	     KNO_MAX_ARGS(4)|KNO_MIN_ARGS(3),
+	     "`(LEVELDB/PUT! *arg0* *arg1* *arg2* [*arg3*])` "
+	     "**undocumented**",
+	     "leveldb",KNO_LEVELDB_TYPE,KNO_VOID,
+	     "key",kno_any_type,KNO_VOID,
+	     "value",kno_any_type,KNO_VOID,
+	     "opts",kno_any_type,KNO_VOID)
 static lispval leveldb_put_prim(lispval leveldb,lispval key,lispval value,
 				lispval opts)
 {
@@ -690,8 +719,14 @@ static lispval leveldb_put_prim(lispval leveldb,lispval key,lispval value,
       else return KNO_VOID;}}
 }
 
-DEFPRIM("leveldb/drop!",leveldb_drop_prim,KNO_MAX_ARGS(3)|KNO_MIN_ARGS(2),
-	"`(LEVELDB/DROP! *arg0* *arg1* [*arg2*])` **undocumented**");
+
+KNO_DEFCPRIM("leveldb/drop!",leveldb_drop_prim,
+	     KNO_MAX_ARGS(3)|KNO_MIN_ARGS(2),
+	     "`(LEVELDB/DROP! *arg0* *arg1* [*arg2*])` "
+	     "**undocumented**",
+	     "leveldb",KNO_LEVELDB_TYPE,KNO_VOID,
+	     "key",kno_any_type,KNO_VOID,
+	     "opts",kno_any_type,KNO_VOID)
 static lispval leveldb_drop_prim(lispval leveldb,lispval key,lispval opts)
 {
   char *errmsg = NULL;
@@ -759,8 +794,14 @@ static struct LEVELDB_KEYBUF *fetchn(struct KNO_LEVELDB *db,int n,
   return results;
 }
 
-DEFPRIM("leveldb/getn",leveldb_getn_prim,KNO_MAX_ARGS(3)|KNO_MIN_ARGS(2),
-	"`(LEVELDB/GETN *arg0* *arg1* [*arg2*])` **undocumented**");
+
+KNO_DEFCPRIM("leveldb/getn",leveldb_getn_prim,
+	     KNO_MAX_ARGS(3)|KNO_MIN_ARGS(2),
+	     "`(LEVELDB/GETN *arg0* *arg1* [*arg2*])` "
+	     "**undocumented**",
+	     "leveldb",KNO_LEVELDB_TYPE,KNO_VOID,
+	     "keys",kno_vector_type,KNO_VOID,
+	     "opts",kno_any_type,KNO_VOID)
 static lispval leveldb_getn_prim(lispval leveldb,lispval keys,lispval opts)
 {
   struct KNO_LEVELDB_CONS *dbcons = (kno_leveldb_cons)leveldb;
@@ -975,11 +1016,16 @@ static int prefix_get_iterfn(struct KNO_LEVELDB *db,lispval key,
   return 1;
 }
 
-DEFPRIM("leveldb/prefix/get",leveldb_prefix_get_prim,KNO_MAX_ARGS(3)|KNO_MIN_ARGS(2),
-	"(LEVELDB/PREFIX/GET *db* *key* [*opts*]) "
-	"returns all the key/value pairs (as packets), "
-	"whose keys begin with the XTYPE representation of "
-	"*key*.");
+
+KNO_DEFCPRIM("leveldb/prefix/get",leveldb_prefix_get_prim,
+	     KNO_MAX_ARGS(3)|KNO_MIN_ARGS(2),
+	     "(LEVELDB/PREFIX/GET *db* *key* [*opts*]) "
+	     "returns all the key/value pairs (as packets), "
+	     "whose keys begin with the XTYPE representation of "
+	     "*key*.",
+	     "leveldb",KNO_LEVELDB_TYPE,KNO_VOID,
+	     "key",kno_any_type,KNO_VOID,
+	     "opts",kno_any_type,KNO_VOID)
 static lispval leveldb_prefix_get_prim(lispval leveldb,lispval key,lispval opts)
 {
   struct KNO_LEVELDB_CONS *dbcons = (kno_leveldb_cons)leveldb;
@@ -992,11 +1038,16 @@ static lispval leveldb_prefix_get_prim(lispval leveldb,lispval key,lispval opts)
   else return results;
 }
 
-DEFPRIM("leveldb/prefix/getn",leveldb_prefix_getn_prim,KNO_MAX_ARGS(3)|KNO_MIN_ARGS(2),
-	"(LEVELDB/PREFIX/GET *db* *key* [*opts*]) "
-	"returns all the key/value pairs (as packets), "
-	"whose keys begin with the XTYPE representation of "
-	"*key*.");
+
+KNO_DEFCPRIM("leveldb/prefix/getn",leveldb_prefix_getn_prim,
+	     KNO_MAX_ARGS(3)|KNO_MIN_ARGS(2),
+	     "(LEVELDB/PREFIX/GET *db* *key* [*opts*]) "
+	     "returns all the key/value pairs (as packets), "
+	     "whose keys begin with the XTYPE representation of "
+	     "*key*.",
+	     "leveldb",KNO_LEVELDB_TYPE,KNO_VOID,
+	     "keys",kno_vector_type,KNO_VOID,
+	     "opts",kno_any_type,KNO_VOID)
 static lispval leveldb_prefix_getn_prim(lispval leveldb,lispval keys,lispval opts)
 {
   struct KNO_LEVELDB_CONS *dbcons = (kno_leveldb_cons)leveldb;
@@ -1099,11 +1150,16 @@ static int index_get_iterfn(struct KNO_LEVELDB *db,lispval key,
     else return accumulate_values(values,1,&v);}
 }
 
-DEFPRIM("leveldb/index/get",leveldb_index_get_prim,KNO_MAX_ARGS(3)|KNO_MIN_ARGS(2),
-	"(LEVELDB/INDEX/GET *db* *key* [*opts*]) "
-	"gets values associated with *key* in *db*, using "
-	"the leveldb database as an index and options "
-	"provided in *opts*.");
+
+KNO_DEFCPRIM("leveldb/index/get",leveldb_index_get_prim,
+	     KNO_MAX_ARGS(3)|KNO_MIN_ARGS(2),
+	     "(LEVELDB/INDEX/GET *db* *key* [*opts*]) "
+	     "gets values associated with *key* in *db*, using "
+	     "the leveldb database as an index and options "
+	     "provided in *opts*.",
+	     "leveldb",KNO_LEVELDB_TYPE,KNO_VOID,
+	     "key",kno_any_type,KNO_VOID,
+	     "opts",kno_any_type,KNO_VOID)
 static lispval leveldb_index_get_prim(lispval leveldb,lispval key,lispval opts)
 {
   struct KNO_LEVELDB_CONS *dbcons = (kno_leveldb_cons)leveldb;
@@ -1218,11 +1274,17 @@ static ssize_t leveldb_adder(struct KNO_LEVELDB *db,lispval key,
 }
 
 
-DEFPRIM("leveldb/index/add!",leveldb_index_add_prim,KNO_MAX_ARGS(4)|KNO_MIN_ARGS(3),
-	"(LEVELDB/INDEX/ADD! *db* *key* *value [*opts*]) "
-	"Saves *values* in *db*, associating them with "
-	"*key* and using the leveldb database as an index "
-	"with options provided in *opts*.");
+
+KNO_DEFCPRIM("leveldb/index/add!",leveldb_index_add_prim,
+	     KNO_MAX_ARGS(4)|KNO_MIN_ARGS(3),
+	     "(LEVELDB/INDEX/ADD! *db* *key* *value [*opts*]) "
+	     "Saves *values* in *db*, associating them with "
+	     "*key* and using the leveldb database as an index "
+	     "with options provided in *opts*.",
+	     "leveldb",KNO_LEVELDB_TYPE,KNO_VOID,
+	     "key",kno_any_type,KNO_VOID,
+	     "values",kno_any_type,KNO_VOID,
+	     "opts",kno_any_type,KNO_VOID)
 static lispval leveldb_index_add_prim(lispval leveldb,lispval key,
 				      lispval values,lispval opts)
 {
@@ -2269,19 +2331,28 @@ static struct KNO_POOL_HANDLER leveldb_pool_handler={
 
 /* Scheme primitives */
 
-DEFPRIM2("leveldb/use-pool",use_leveldb_pool_prim,KNO_MAX_ARGS(2)|KNO_MIN_ARGS(1),
-	 "`(LEVELDB/USE-POOL *arg0* [*arg1*])` **undocumented**",
-	 kno_string_type,KNO_VOID,kno_any_type,KNO_VOID);
+
+KNO_DEFCPRIM("leveldb/use-pool",use_leveldb_pool_prim,
+	     KNO_MAX_ARGS(2)|KNO_MIN_ARGS(1),
+	     "`(LEVELDB/USE-POOL *arg0* [*arg1*])` "
+	     "**undocumented**",
+	     "path",kno_string_type,KNO_VOID,
+	     "opts",kno_any_type,KNO_VOID)
 static lispval use_leveldb_pool_prim(lispval path,lispval opts)
 {
   kno_pool pool = kno_open_leveldb_pool(KNO_CSTRING(path),-1,opts);
   return kno_pool2lisp(pool);
 }
 
-DEFPRIM4("leveldb/make-pool",make_leveldb_pool_prim,KNO_MAX_ARGS(4)|KNO_MIN_ARGS(3),
-	 "`(LEVELDB/MAKE-POOL *arg0* *arg1* *arg2* [*arg3*])` **undocumented**",
-	 kno_string_type,KNO_VOID,kno_oid_type,KNO_VOID,
-	 kno_fixnum_type,KNO_VOID,kno_any_type,KNO_VOID);
+
+KNO_DEFCPRIM("leveldb/make-pool",make_leveldb_pool_prim,
+	     KNO_MAX_ARGS(4)|KNO_MIN_ARGS(3),
+	     "`(LEVELDB/MAKE-POOL *arg0* *arg1* *arg2* [*arg3*])` "
+	     "**undocumented**",
+	     "path",kno_string_type,KNO_VOID,
+	     "base",kno_oid_type,KNO_VOID,
+	     "cap",kno_fixnum_type,KNO_VOID,
+	     "opts",kno_any_type,KNO_VOID)
 static lispval make_leveldb_pool_prim(lispval path,lispval base,lispval cap,
 				      lispval opts)
 {
@@ -2414,21 +2485,21 @@ KNO_EXPORT int kno_init_leveldb()
 
 static void link_local_cprims()
 {
-  KNO_LINK_PRIM("leveldb/make-pool",make_leveldb_pool_prim,4,leveldb_module);
-  KNO_LINK_PRIM("leveldb/use-pool",use_leveldb_pool_prim,2,leveldb_module);
-  KNO_LINK_PRIM("leveldb/index/add!",leveldb_index_add_prim,4,leveldb_module);
-  KNO_LINK_PRIM("leveldb/index/get",leveldb_index_get_prim,3,leveldb_module);
+  KNO_LINK_CPRIM("leveldb/make-pool",make_leveldb_pool_prim,4,leveldb_module);
+  KNO_LINK_CPRIM("leveldb/use-pool",use_leveldb_pool_prim,2,leveldb_module);
+  KNO_LINK_CPRIM("leveldb/index/add!",leveldb_index_add_prim,4,leveldb_module);
+  KNO_LINK_CPRIM("leveldb/index/get",leveldb_index_get_prim,3,leveldb_module);
 
-  KNO_LINK_PRIM("leveldb/prefix/getn",leveldb_prefix_getn_prim,3,leveldb_module);
-  KNO_LINK_PRIM("leveldb/prefix/get",leveldb_prefix_get_prim,3,leveldb_module);
-  KNO_LINK_PRIM("leveldb/getn",leveldb_getn_prim,3,leveldb_module);
-  KNO_LINK_PRIM("leveldb/drop!",leveldb_drop_prim,3,leveldb_module);
-  KNO_LINK_PRIM("leveldb/put!",leveldb_put_prim,4,leveldb_module);
-  KNO_LINK_PRIM("leveldb/get",leveldb_get_prim,3,leveldb_module);
-  KNO_LINK_PRIM("leveldb/reopen",leveldb_reopen_prim,1,leveldb_module);
-  KNO_LINK_PRIM("leveldb/close",leveldb_close_prim,1,leveldb_module);
-  KNO_LINK_PRIM("leveldb?",leveldbp_prim,1,leveldb_module);
-  KNO_LINK_PRIM("leveldb/open",leveldb_open_prim,2,leveldb_module);
+  KNO_LINK_CPRIM("leveldb/prefix/getn",leveldb_prefix_getn_prim,3,leveldb_module);
+  KNO_LINK_CPRIM("leveldb/prefix/get",leveldb_prefix_get_prim,3,leveldb_module);
+  KNO_LINK_CPRIM("leveldb/getn",leveldb_getn_prim,3,leveldb_module);
+  KNO_LINK_CPRIM("leveldb/drop!",leveldb_drop_prim,3,leveldb_module);
+  KNO_LINK_CPRIM("leveldb/put!",leveldb_put_prim,4,leveldb_module);
+  KNO_LINK_CPRIM("leveldb/get",leveldb_get_prim,3,leveldb_module);
+  KNO_LINK_CPRIM("leveldb/reopen",leveldb_reopen_prim,1,leveldb_module);
+  KNO_LINK_CPRIM("leveldb/close",leveldb_close_prim,1,leveldb_module);
+  KNO_LINK_CPRIM("leveldb?",leveldbp_prim,1,leveldb_module);
+  KNO_LINK_CPRIM("leveldb/open",leveldb_open_prim,2,leveldb_module);
 
   KNO_LINK_TYPED("leveldb/close",leveldb_close_prim,1,leveldb_module,
 		 kno_leveldb_type,KNO_VOID);
