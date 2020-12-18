@@ -2423,8 +2423,7 @@ KNO_EXPORT int kno_init_leveldb()
   sync_writeopts = leveldb_writeoptions_create();
   leveldb_writeoptions_set_sync(sync_writeopts,1);
 
-  kno_leveldb_type = kno_register_cons_type("Leveldb");
-  kno_add_type_alias(KNO_LEVELDB_TYPE,kno_leveldb_type);
+  kno_leveldb_type = kno_register_cons_type("Leveldb",KNO_LEVELDB_TYPE);
 
   kno_unparsers[kno_leveldb_type]=unparse_leveldb;
   kno_recyclers[kno_leveldb_type]=recycle_leveldb;
