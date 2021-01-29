@@ -45,7 +45,7 @@
 #include <libu8/u8crypto.h>
 
 kno_lisp_type kno_leveldb_type;
-#define KNO_LEVELDB_TYPE 0x2b4c3f7695fe05cL
+#define KNO_LEVELDB_TYPE 0xf248e8
 
 u8_condition Leveldb_Error = "Leveldb/Error";
 
