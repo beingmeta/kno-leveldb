@@ -1,7 +1,7 @@
 Source: kno-leveldb
 Priority: optional
 Maintainer: Ken Haase <kh@beingmeta.com>
-Build-Depends: debhelper (>= 8.0.0), autotools-dev, debsigs, devscripts, libu8-dev, kno-dev, libleveldb-dev
+Build-Depends: debhelper (>= 8.0.0), autotools-dev, debsigs, devscripts, libu8-dev, libleveldb-dev, kno-dev (>= @KNO_MAJOR@)
 Standards-Version: 3.9.4
 Section: libs
 Homepage: http://www.beingmeta.com/
@@ -9,6 +9,6 @@ Homepage: http://www.beingmeta.com/
 Package: kno-leveldb
 Section: libdevel
 Architecture: any
-Depends: kno-core, libleveldb1d | libleveldb1v5
+Depends: libleveldb1d | libleveldb1v5, kno-core (>= @KNO_MAJOR@)
 Description: LEVELDB module for KNO
 
