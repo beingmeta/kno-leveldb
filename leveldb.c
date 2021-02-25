@@ -3,6 +3,7 @@
 /* leveldb.c
    This implements Kno bindings to leveldb.
    Copyright (C) 2007-2020 beingmeta, inc.
+   Copyright (C) 2020-2021 beingmeta, LLC
 */
 
 #ifndef _FILEINFO
@@ -545,10 +546,10 @@ static void recycle_leveldb(struct KNO_RAW_CONS *c)
 
 
 DEFC_PRIM("leveldb/open",leveldb_open_prim,
-	     KNO_MAX_ARGS(2)|KNO_MIN_ARGS(1),
-	     "**undocumented**",
-	     {"path",kno_string_type,KNO_VOID},
-	     {"opts",kno_any_type,KNO_VOID})
+	  KNO_MAX_ARGS(2)|KNO_MIN_ARGS(1),
+	  "**undocumented**",
+	  {"path",kno_string_type,KNO_VOID},
+	  {"opts",kno_any_type,KNO_VOID})
 static lispval leveldb_open_prim(lispval path,lispval opts)
 {
   struct KNO_LEVELDB_CONS *db = u8_alloc(struct KNO_LEVELDB_CONS);
@@ -563,9 +564,9 @@ static lispval leveldb_open_prim(lispval path,lispval opts)
 
 
 DEFC_PRIM("leveldb?",leveldbp_prim,
-	     KNO_MAX_ARGS(1)|KNO_MIN_ARGS(1),
-	     "**undocumented**",
-	     {"arg",kno_any_type,KNO_VOID})
+	  KNO_MAX_ARGS(1)|KNO_MIN_ARGS(1),
+	  "**undocumented**",
+	  {"arg",kno_any_type,KNO_VOID})
 static lispval leveldbp_prim(lispval arg)
 {
   if (KNO_TYPEP(arg,kno_leveldb_type))
@@ -575,9 +576,9 @@ static lispval leveldbp_prim(lispval arg)
 
 
 DEFC_PRIM("leveldb/close",leveldb_close_prim,
-	     KNO_MAX_ARGS(1)|KNO_MIN_ARGS(1),
-	     "**undocumented**",
-	     {"leveldb",KNO_LEVELDB_TYPE,KNO_VOID})
+	  KNO_MAX_ARGS(1)|KNO_MIN_ARGS(1),
+	  "**undocumented**",
+	  {"leveldb",KNO_LEVELDB_TYPE,KNO_VOID})
 static lispval leveldb_close_prim(lispval leveldb)
 {
   struct KNO_LEVELDB_CONS *db = (kno_leveldb_cons)leveldb;
@@ -587,9 +588,9 @@ static lispval leveldb_close_prim(lispval leveldb)
 
 
 DEFC_PRIM("leveldb/reopen",leveldb_reopen_prim,
-	     KNO_MAX_ARGS(1)|KNO_MIN_ARGS(1),
-	     "**undocumented**",
-	     {"leveldb",KNO_LEVELDB_TYPE,KNO_VOID})
+	  KNO_MAX_ARGS(1)|KNO_MIN_ARGS(1),
+	  "**undocumented**",
+	  {"leveldb",KNO_LEVELDB_TYPE,KNO_VOID})
 static lispval leveldb_reopen_prim(lispval leveldb)
 {
   struct KNO_LEVELDB_CONS *db = (kno_leveldb_cons)leveldb;
@@ -604,11 +605,11 @@ static lispval leveldb_reopen_prim(lispval leveldb)
 
 
 DEFC_PRIM("leveldb/get",leveldb_get_prim,
-	     KNO_MAX_ARGS(3)|KNO_MIN_ARGS(2),
-	     "**undocumented**",
-	     {"leveldb",KNO_LEVELDB_TYPE,KNO_VOID},
-	     {"key",kno_any_type,KNO_VOID},
-	     {"opts",kno_any_type,KNO_VOID})
+	  KNO_MAX_ARGS(3)|KNO_MIN_ARGS(2),
+	  "**undocumented**",
+	  {"leveldb",KNO_LEVELDB_TYPE,KNO_VOID},
+	  {"key",kno_any_type,KNO_VOID},
+	  {"opts",kno_any_type,KNO_VOID})
 static lispval leveldb_get_prim(lispval leveldb,lispval key,lispval opts)
 {
   struct KNO_LEVELDB_CONS *db = (kno_leveldb_cons)leveldb;
@@ -663,12 +664,12 @@ static lispval leveldb_get_prim(lispval leveldb,lispval key,lispval opts)
 
 
 DEFC_PRIM("leveldb/put!",leveldb_put_prim,
-	     KNO_MAX_ARGS(4)|KNO_MIN_ARGS(3),
-	     "**undocumented**",
-	     {"leveldb",KNO_LEVELDB_TYPE,KNO_VOID},
-	     {"key",kno_any_type,KNO_VOID},
-	     {"value",kno_any_type,KNO_VOID},
-	     {"opts",kno_any_type,KNO_VOID})
+	  KNO_MAX_ARGS(4)|KNO_MIN_ARGS(3),
+	  "**undocumented**",
+	  {"leveldb",KNO_LEVELDB_TYPE,KNO_VOID},
+	  {"key",kno_any_type,KNO_VOID},
+	  {"value",kno_any_type,KNO_VOID},
+	  {"opts",kno_any_type,KNO_VOID})
 static lispval leveldb_put_prim(lispval leveldb,lispval key,lispval value,
 				lispval opts)
 {
@@ -716,11 +717,11 @@ static lispval leveldb_put_prim(lispval leveldb,lispval key,lispval value,
 
 
 DEFC_PRIM("leveldb/drop!",leveldb_drop_prim,
-	     KNO_MAX_ARGS(3)|KNO_MIN_ARGS(2),
-	     "**undocumented**",
-	     {"leveldb",KNO_LEVELDB_TYPE,KNO_VOID},
-	     {"key",kno_any_type,KNO_VOID},
-	     {"opts",kno_any_type,KNO_VOID})
+	  KNO_MAX_ARGS(3)|KNO_MIN_ARGS(2),
+	  "**undocumented**",
+	  {"leveldb",KNO_LEVELDB_TYPE,KNO_VOID},
+	  {"key",kno_any_type,KNO_VOID},
+	  {"opts",kno_any_type,KNO_VOID})
 static lispval leveldb_drop_prim(lispval leveldb,lispval key,lispval opts)
 {
   char *errmsg = NULL;
@@ -790,11 +791,11 @@ static struct LEVELDB_KEYBUF *fetchn(struct KNO_LEVELDB *db,int n,
 
 
 DEFC_PRIM("leveldb/getn",leveldb_getn_prim,
-	     KNO_MAX_ARGS(3)|KNO_MIN_ARGS(2),
-	     "**undocumented**",
-	     "leveldb",KNO_LEVELDB_TYPE,KNO_VOID,
-	     "keys",kno_vector_type,KNO_VOID,
-	     "opts",kno_any_type,KNO_VOID)
+	  KNO_MAX_ARGS(3)|KNO_MIN_ARGS(2),
+	  "**undocumented**",
+	  "leveldb",KNO_LEVELDB_TYPE,KNO_VOID,
+	  "keys",kno_vector_type,KNO_VOID,
+	  "opts",kno_any_type,KNO_VOID)
 static lispval leveldb_getn_prim(lispval leveldb,lispval keys,lispval opts)
 {
   struct KNO_LEVELDB_CONS *dbcons = (kno_leveldb_cons)leveldb;
@@ -1011,14 +1012,14 @@ static int prefix_get_iterfn(struct KNO_LEVELDB *db,lispval key,
 
 
 DEFC_PRIM("leveldb/prefix/get",leveldb_prefix_get_prim,
-	     KNO_MAX_ARGS(3)|KNO_MIN_ARGS(2),
-	     "(LEVELDB/PREFIX/GET *db* *key* [*opts*]) "
-	     "returns all the key/value pairs (as packets), "
-	     "whose keys begin with the XTYPE representation of "
-	     "*key*.",
-	     {"leveldb",KNO_LEVELDB_TYPE,KNO_VOID},
-	     {"key",kno_any_type,KNO_VOID},
-	     {"opts",kno_any_type,KNO_VOID})
+	  KNO_MAX_ARGS(3)|KNO_MIN_ARGS(2),
+	  "(LEVELDB/PREFIX/GET *db* *key* [*opts*]) "
+	  "returns all the key/value pairs (as packets), "
+	  "whose keys begin with the XTYPE representation of "
+	  "*key*.",
+	  {"leveldb",KNO_LEVELDB_TYPE,KNO_VOID},
+	  {"key",kno_any_type,KNO_VOID},
+	  {"opts",kno_any_type,KNO_VOID})
 static lispval leveldb_prefix_get_prim(lispval leveldb,lispval key,lispval opts)
 {
   struct KNO_LEVELDB_CONS *dbcons = (kno_leveldb_cons)leveldb;
@@ -1033,14 +1034,14 @@ static lispval leveldb_prefix_get_prim(lispval leveldb,lispval key,lispval opts)
 
 
 DEFC_PRIM("leveldb/prefix/getn",leveldb_prefix_getn_prim,
-	     KNO_MAX_ARGS(3)|KNO_MIN_ARGS(2),
-	     "(LEVELDB/PREFIX/GET *db* *key* [*opts*]) "
-	     "returns all the key/value pairs (as packets), "
-	     "whose keys begin with the XTYPE representation of "
-	     "*key*.",
-	     {"leveldb",KNO_LEVELDB_TYPE,KNO_VOID},
-	     {"keys",kno_vector_type,KNO_VOID},
-	     {"opts",kno_any_type,KNO_VOID})
+	  KNO_MAX_ARGS(3)|KNO_MIN_ARGS(2),
+	  "(LEVELDB/PREFIX/GET *db* *key* [*opts*]) "
+	  "returns all the key/value pairs (as packets), "
+	  "whose keys begin with the XTYPE representation of "
+	  "*key*.",
+	  {"leveldb",KNO_LEVELDB_TYPE,KNO_VOID},
+	  {"keys",kno_vector_type,KNO_VOID},
+	  {"opts",kno_any_type,KNO_VOID})
 static lispval leveldb_prefix_getn_prim(lispval leveldb,lispval keys,lispval opts)
 {
   struct KNO_LEVELDB_CONS *dbcons = (kno_leveldb_cons)leveldb;
@@ -1145,14 +1146,14 @@ static int index_get_iterfn(struct KNO_LEVELDB *db,lispval key,
 
 
 DEFC_PRIM("leveldb/index/get",leveldb_index_get_prim,
-	     KNO_MAX_ARGS(3)|KNO_MIN_ARGS(2),
-	     "(LEVELDB/INDEX/GET *db* *key* [*opts*]) "
-	     "gets values associated with *key* in *db*, using "
-	     "the leveldb database as an index and options "
-	     "provided in *opts*.",
-	     {"leveldb",KNO_LEVELDB_TYPE,KNO_VOID},
-	     {"key",kno_any_type,KNO_VOID},
-	     {"opts",kno_any_type,KNO_VOID})
+	  KNO_MAX_ARGS(3)|KNO_MIN_ARGS(2),
+	  "(LEVELDB/INDEX/GET *db* *key* [*opts*]) "
+	  "gets values associated with *key* in *db*, using "
+	  "the leveldb database as an index and options "
+	  "provided in *opts*.",
+	  {"leveldb",KNO_LEVELDB_TYPE,KNO_VOID},
+	  {"key",kno_any_type,KNO_VOID},
+	  {"opts",kno_any_type,KNO_VOID})
 static lispval leveldb_index_get_prim(lispval leveldb,lispval key,lispval opts)
 {
   struct KNO_LEVELDB_CONS *dbcons = (kno_leveldb_cons)leveldb;
@@ -1269,15 +1270,15 @@ static ssize_t leveldb_adder(struct KNO_LEVELDB *db,lispval key,
 
 
 DEFC_PRIM("leveldb/index/add!",leveldb_index_add_prim,
-	     KNO_MAX_ARGS(4)|KNO_MIN_ARGS(3),
-	     "(LEVELDB/INDEX/ADD! *db* *key* *value [*opts*]) "
-	     "Saves *values* in *db*, associating them with "
-	     "*key* and using the leveldb database as an index "
-	     "with options provided in *opts*.",
-	     {"leveldb",KNO_LEVELDB_TYPE,KNO_VOID},
-	     {"key",kno_any_type,KNO_VOID},
-	     {"values",kno_any_type,KNO_VOID},
-	     {"opts",kno_any_type,KNO_VOID})
+	  KNO_MAX_ARGS(4)|KNO_MIN_ARGS(3),
+	  "(LEVELDB/INDEX/ADD! *db* *key* *value [*opts*]) "
+	  "Saves *values* in *db*, associating them with "
+	  "*key* and using the leveldb database as an index "
+	  "with options provided in *opts*.",
+	  {"leveldb",KNO_LEVELDB_TYPE,KNO_VOID},
+	  {"key",kno_any_type,KNO_VOID},
+	  {"values",kno_any_type,KNO_VOID},
+	  {"opts",kno_any_type,KNO_VOID})
 static lispval leveldb_index_add_prim(lispval leveldb,lispval key,
 				      lispval values,lispval opts)
 {
@@ -2326,10 +2327,10 @@ static struct KNO_POOL_HANDLER leveldb_pool_handler={
 
 
 DEFC_PRIM("leveldb/use-pool",use_leveldb_pool_prim,
-	     KNO_MAX_ARGS(2)|KNO_MIN_ARGS(1),
-	     "**undocumented**",
-	     {"path",kno_string_type,KNO_VOID},
-	     {"opts",kno_any_type,KNO_VOID})
+	  KNO_MAX_ARGS(2)|KNO_MIN_ARGS(1),
+	  "**undocumented**",
+	  {"path",kno_string_type,KNO_VOID},
+	  {"opts",kno_any_type,KNO_VOID})
 static lispval use_leveldb_pool_prim(lispval path,lispval opts)
 {
   kno_pool pool = kno_open_leveldb_pool(KNO_CSTRING(path),-1,opts);
@@ -2338,12 +2339,12 @@ static lispval use_leveldb_pool_prim(lispval path,lispval opts)
 
 
 DEFC_PRIM("leveldb/make-pool",make_leveldb_pool_prim,
-	     KNO_MAX_ARGS(4)|KNO_MIN_ARGS(3),
-	     "**undocumented**",
-	     {"path",kno_string_type,KNO_VOID},
-	     {"base",kno_oid_type,KNO_VOID},
-	     {"cap",kno_fixnum_type,KNO_VOID},
-	     {"opts",kno_any_type,KNO_VOID})
+	  KNO_MAX_ARGS(4)|KNO_MIN_ARGS(3),
+	  "**undocumented**",
+	  {"path",kno_string_type,KNO_VOID},
+	  {"base",kno_oid_type,KNO_VOID},
+	  {"cap",kno_fixnum_type,KNO_VOID},
+	  {"opts",kno_any_type,KNO_VOID})
 static lispval make_leveldb_pool_prim(lispval path,lispval base,lispval cap,
 				      lispval opts)
 {
