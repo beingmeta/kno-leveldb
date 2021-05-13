@@ -1799,22 +1799,23 @@ static void recycle_leveldb_index(kno_index ix)
 
 /* Initializing the index driver */
 
-static struct KNO_INDEX_HANDLER leveldb_index_handler={
-  "leveldb_index", 1, sizeof(struct KNO_LEVELDB_INDEX), 14,
-  leveldb_index_close, /* close */
-  leveldb_index_commit, /* commit */
-  leveldb_index_fetch, /* fetch */
-  leveldb_index_fetchsize, /* fetchsize */
-  NULL, /* prefetch */
-  leveldb_index_fetchn, /* fetchn */
-  leveldb_index_fetchkeys, /* fetchkeys */
-  NULL, /* fetchinfo */
-  NULL, /* batchadd */
-  leveldb_index_create, /* create */
-  NULL, /* walk */
-  recycle_leveldb_index, /* recycle */
-  NULL /* indexctl */
-};
+static struct KNO_INDEX_HANDLER leveldb_index_handler=
+  {
+   "leveldb_index", 1, sizeof(struct KNO_LEVELDB_INDEX), 14, NULL,
+   leveldb_index_close, /* close */
+   leveldb_index_commit, /* commit */
+   leveldb_index_fetch, /* fetch */
+   leveldb_index_fetchsize, /* fetchsize */
+   NULL, /* prefetch */
+   leveldb_index_fetchn, /* fetchn */
+   leveldb_index_fetchkeys, /* fetchkeys */
+   NULL, /* fetchinfo */
+   NULL, /* batchadd */
+   leveldb_index_create, /* create */
+   NULL, /* walk */
+   recycle_leveldb_index, /* recycle */
+   NULL /* indexctl */
+  };
 
 /* Leveldb pool backends */
 
@@ -2306,22 +2307,23 @@ static void recycle_leveldb_pool(kno_pool p)
 
 /* The Leveldb pool handler */
 
-static struct KNO_POOL_HANDLER leveldb_pool_handler={
-  "leveldb_pool", 1, sizeof(struct KNO_LEVELDB_POOL), 12,
-  leveldb_pool_close, /* close */
-  leveldb_pool_alloc, /* alloc */
-  leveldb_pool_fetchoid, /* fetch */
-  leveldb_pool_fetchn, /* fetchn */
-  leveldb_pool_getload, /* getload */
-  leveldb_pool_lock, /* lock */
-  leveldb_pool_unlock, /* release */
-  leveldb_pool_commit, /* commit */
-  NULL, /* swapout */
-  leveldb_pool_create, /* create */
-  NULL,  /* walk */
-  recycle_leveldb_pool, /* recycle */
-  NULL  /* poolctl */
-};
+static struct KNO_POOL_HANDLER leveldb_pool_handler=
+  {
+   "leveldb_pool", 1, sizeof(struct KNO_LEVELDB_POOL), 12, NULL,
+   leveldb_pool_close, /* close */
+   leveldb_pool_alloc, /* alloc */
+   leveldb_pool_fetchoid, /* fetch */
+   leveldb_pool_fetchn, /* fetchn */
+   leveldb_pool_getload, /* getload */
+   leveldb_pool_lock, /* lock */
+   leveldb_pool_unlock, /* release */
+   leveldb_pool_commit, /* commit */
+   NULL, /* swapout */
+   leveldb_pool_create, /* create */
+   NULL,  /* walk */
+   recycle_leveldb_pool, /* recycle */
+   NULL  /* poolctl */
+  };
 
 /* Scheme primitives */
 
