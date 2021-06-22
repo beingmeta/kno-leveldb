@@ -1161,7 +1161,7 @@ static lispval leveldb_index_get_prim(lispval leveldb,lispval key,lispval opts)
   struct KEY_VALUES accumulator = {0};
   int rv = leveldb_scanner(db,opts,NULL,key,NULL,index_get_iterfn,&accumulator);
   if (rv<0) {
-    kno_decref_vec(accumulator.vec,accumulator.used);
+    kno_decref_elts(accumulator.vec,accumulator.used);
     u8_free(accumulator.vec);
     return KNO_ERROR_VALUE;}
   else return kno_init_choice(NULL,accumulator.used,accumulator.vec,-1);
