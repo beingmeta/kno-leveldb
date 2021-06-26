@@ -9,8 +9,8 @@ URL:            http://www.beingmeta.com/
 Source0:        kno-@PKG_NAME@.tar
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  libu8-devel curl-devel libldns-devel libffi-devel jemalloc-devel csnappy-devel libzstd-devel python3-devel unixodbc-devel
-Requires:       libu8 >= 3.0 curl >= 7.15.1 ldns csnappy libffi libzstd unixodbc
+BuildRequires:  libu8-devel kno-devel leveldb-devel
+Requires:       libu8 >= 3.0 kno >= 2106 leveldb
 
 %description
 This provides bindings and pool/index drivers for LevelDB
