@@ -1,6 +1,6 @@
 #!/bin/sh
 
-PROBE_NAMES=leveldb
+PROBE_NAMES=$@
 DEFAULT_CFLAGS=
 
 if which pkg-config 1>/dev/null 2>/dev/null; then

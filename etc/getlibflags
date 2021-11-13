@@ -1,7 +1,8 @@
 #!/bin/sh
 
-PROBE_NAMES=leveldb
-DEFAULT_LIBS=-lleveldb
+LIBNAME=$1
+PROBE_NAMES=$@
+DEFAULT_LIBFLAGS=-l${LIBNAME}
 
 if which pkg-config 1>/dev/null 2>/dev/null; then
     for name in ${PROBE_NAMES}; do
@@ -11,4 +12,4 @@ if which pkg-config 1>/dev/null 2>/dev/null; then
 	fi;
     done;
 fi;
-echo ${DEFAULT_LIBS};
+echo ${DEFAULT_LIBFLAGS};

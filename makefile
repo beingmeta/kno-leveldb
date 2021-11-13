@@ -1,3 +1,5 @@
+PKGNAME	          = leveldb # Edit to adapt
+LIBNAME	          = leveldb
 KNOCONFIG         = knoconfig
 KNOBUILD          = knobuild
 
@@ -18,12 +20,10 @@ INIT_LDFLAGS 	::= ${LDFLAGS}
 KNO_CFLAGS	::= -I. -fPIC $(shell ${KNOCONFIG} cflags)
 KNO_LDFLAGS	::= -fPIC $(shell ${KNOCONFIG} ldflags)
 KNO_LIBS	::= $(shell ${KNOCONFIG} libs)
-MODULE_CFLAGS   ::= $(shell ./etc/getcflags)
-MODULE_LDFLAGS  ::= $(shell ./etc/getlibflags)
+MODULE_CFLAGS   ::= $(shell ./etc/getcflags $(LIBNAME})
+MODULE_LDFLAGS  ::= $(shell ./etc/getlibflags $(LIBNAME})
 SUDO  		::= $(shell which sudo)
 
-PKGNAME	          = leveldb # Edit to adapt
-LIBNAME	          = leveldb
 CFLAGS		  = ${INIT_CFLAGS} ${MODULE_CFLAGS} ${KNO_CFLAGS} ${XCFLAGS}
 LDFLAGS		  = ${INIT_LDFLAGS} ${MODULE_LDFLAGS} ${KNO_LDFLAGS} ${XLDFLAGS}
 MKSO		  = $(CC) -shared $(CFLAGS) $(LDFLAGS) $(LIBS)
@@ -73,10 +73,11 @@ leveldb.dylib: leveldb.c makefile .buildmode
 		${CFLAGS} ${LDFLAGS} -o $@ $(DYLIB_FLAGS) \
 		leveldb.c
 	@$(MSG) MACLIBTOOL  $@ $<
+
 TAGS: leveldb.c
 	etags -o TAGS leveldb.c
 
-# Othert dependencies
+# Other targets
 
 ${CMODULES}:
 	install -d $@
