@@ -1,0 +1,14 @@
+#!/bin/sh
+
+PROBE_NAMES=leveldb
+DEFAULT_LIBS=-lleveldb
+
+if which pkg-config 1>/dev/null 2>/dev/null; then
+    for name in ${PROBE_NAMES}; do
+	if pkg-config --exists ${name} 1>/dev/null 2>/dev/null; then
+	    pkg-config --libs ${name} 2>/dev/null;
+	    exit;
+	fi;
+    done;
+fi;
+echo ${DEFAULT_LIBS};
