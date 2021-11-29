@@ -180,8 +180,8 @@ staging/alpine:
 staging/alpine/APKBUILD: dist/alpine/APKBUILD staging/alpine
 	cp dist/alpine/APKBUILD staging/alpine
 
-staging/alpine/kno-${PKGNAME}.tar: staging/alpine
-	git archive --prefix=kno-${PKGNAME}/ -o staging/alpine/kno-${PKGNAME}.tar HEAD
+staging/alpine/kno-leveldb.tar: staging/alpine
+	cp kno-leveldb.tar staging/alpine
 
 dist/alpine.setup: staging/alpine/APKBUILD makefile ${STATICLIBS} \
 	staging/alpine/kno-${PKGNAME}.tar
