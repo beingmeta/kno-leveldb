@@ -83,7 +83,7 @@ ${CMODULES}:
 	install -d $@
 
 install: build ${CMODULES}
-	${SUDO} u8_install_shared ${LIB_NAME}.${libsuffix} ${CMODULES} ${FULL_VERSION} "${SYSINSTALL}"
+	${SUDO} u8_install_shared ${LIBNAME}.${libsuffix} ${CMODULES} ${FULL_VERSION} "${SYSINSTALL}"
 
 clean:
 	rm -f *.o *.${libsuffix}
